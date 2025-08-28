@@ -16,7 +16,9 @@ import javax.inject.Inject
 
 data class FavoritesScreenState(
     val selectedMovieIds: Set<Int> = emptySet(),
-    val isSelectionMode: Boolean = false
+    val isSelectionMode: Boolean = false,
+    val selectedMovie: Movie? = null,
+    val showMovieDetails: Boolean = false
 )
 
 @HiltViewModel
@@ -69,5 +71,19 @@ class FavoritesViewModel @Inject constructor(
     
     fun isMovieSelected(movieId: Int): Boolean {
         return _state.value.selectedMovieIds.contains(movieId)
+    }
+    
+    fun showMovieDetails(movie: Movie) {
+        _state.value = _state.value.copy(
+            selectedMovie = movie,
+            showMovieDetails = true
+        )
+    }
+    
+    fun hideMovieDetails() {
+        _state.value = _state.value.copy(
+            selectedMovie = null,
+            showMovieDetails = false
+        )
     }
 }

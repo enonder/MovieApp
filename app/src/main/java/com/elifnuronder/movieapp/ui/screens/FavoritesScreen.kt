@@ -14,14 +14,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.elifnuronder.movieapp.ui.components.FavoriteMovieItem
+import com.elifnuronder.movieapp.ui.components.MovieDetailsBottomSheet
 import com.elifnuronder.movieapp.viewmodel.FavoritesViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel = hiltViewModel()
 ) {
     val favoriteMovies by viewModel.favoriteMovies.collectAsState()
     val state by viewModel.state
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+    
+    // Show/hide bottom sheet based on state
+    LaunchedEffect(state.showMovieDetails) {
+        if (state.showMovieDetails) {
+            bottomSheetState.show()
+        } else {
+            bottomSheetState.hide()
+        }
+    }
     
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -78,7 +92,7 @@ fun FavoritesScreen(
                                 viewModel.toggleSelection(movie.id)
                             },
                             onClick = {
-                                // TODO: Navigate to movie detail screen
+                                viewModel.showMovieDetails(movie)
                             }
                         )
                     }
@@ -133,6 +147,19 @@ fun FavoritesScreen(
                         }
                     }
                 }
+            }
+        }
+        
+        // Movie Details Bottom Sheet
+        if (state.showMovieDetails && state.selectedMovie != null) {
+            ModalBottomSheet(
+                onDismissRequest = { viewModel.hideMovieDetails() },
+                sheetState = bottomSheetState
+            ) {
+                MovieDetailsBottomSheet(
+                    movie = state.selectedMovie!!,
+                    onDismiss = { viewModel.hideMovieDetails() }
+                )
             }
         }
     }

@@ -22,7 +22,9 @@ data class HomeScreenState(
     val selectedTimePeriod: TimePeriod = TimePeriod.TODAY,
     val favoriteMovieIds: Set<Int> = emptySet(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val selectedMovie: Movie? = null,
+    val showMovieDetails: Boolean = false
 )
 
 @HiltViewModel
@@ -93,5 +95,19 @@ class HomeViewModel @Inject constructor(
     
     fun retry() {
         loadMovies()
+    }
+    
+    fun showMovieDetails(movie: Movie) {
+        _state.value = _state.value.copy(
+            selectedMovie = movie,
+            showMovieDetails = true
+        )
+    }
+    
+    fun hideMovieDetails() {
+        _state.value = _state.value.copy(
+            selectedMovie = null,
+            showMovieDetails = false
+        )
     }
 }
