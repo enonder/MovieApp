@@ -2,8 +2,10 @@ package com.elifnuronder.movieapp.di
 
 import com.elifnuronder.movieapp.data.repository.FavoriteRepositoryImpl
 import com.elifnuronder.movieapp.data.repository.MovieRepositoryImpl
+import com.elifnuronder.movieapp.data.repository.ThemeRepositoryImpl
 import com.elifnuronder.movieapp.domain.repository.FavoriteRepository
 import com.elifnuronder.movieapp.domain.repository.MovieRepository
+import com.elifnuronder.movieapp.domain.repository.ThemeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,4 +27,10 @@ abstract class RepositoryModule {
     abstract fun bindFavoriteRepository(
         favoriteRepositoryImpl: FavoriteRepositoryImpl
     ): FavoriteRepository
+    
+    @Binds
+    @Singleton
+    abstract fun bindThemeRepository(
+        themeRepositoryImpl: ThemeRepositoryImpl
+    ): ThemeRepository
 }
