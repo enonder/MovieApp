@@ -14,8 +14,10 @@ import com.elifnuronder.movieapp.domain.model.Movie
 fun MovieSection(
     title: String,
     movies: List<Movie>,
+    favoriteMovieIds: Set<Int> = emptySet(),
     modifier: Modifier = Modifier,
-    onMovieClick: (Movie) -> Unit = {}
+    onMovieClick: (Movie) -> Unit = {},
+    onFavoriteClick: (Movie) -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -34,7 +36,9 @@ fun MovieSection(
             items(movies) { movie ->
                 MovieCard(
                     movie = movie,
-                    onClick = { onMovieClick(movie) }
+                    isFavorite = favoriteMovieIds.contains(movie.id),
+                    onClick = { onMovieClick(movie) },
+                    onFavoriteClick = { onFavoriteClick(movie) }
                 )
             }
         }

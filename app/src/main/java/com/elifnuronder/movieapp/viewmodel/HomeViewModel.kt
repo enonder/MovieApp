@@ -6,22 +6,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elifnuronder.movieapp.domain.model.Movie
 import com.elifnuronder.movieapp.domain.model.TimePeriod
+import com.elifnuronder.movieapp.domain.use_case.GetAllFavoritesUseCase
+import com.elifnuronder.movieapp.domain.use_case.GetFavoriteStatusUseCase
 import com.elifnuronder.movieapp.domain.use_case.GetPopularMoviesByTimePeriodUseCase
+import com.elifnuronder.movieapp.domain.use_case.ToggleFavoriteUseCase
 import com.elifnuronder.movieapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class HomeScreenState(
     val movies: List<Movie> = emptyList(),
     val selectedTimePeriod: TimePeriod = TimePeriod.TODAY,
+    val favoriteMovieIds: Set<Int> = emptySet(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getPopularMoviesByTimePeriodUseCase: GetPopularMoviesByTimePeriodUseCase
+    private val getPopularMoviesByTimePeriodUseCase: GetPopularMoviesByTimePeriodUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    private val getFavoriteStatusUseCase: GetFavoriteStatusUseCase,
+    private val getAllFavoritesUseCase: GetAllFavoritesUseCase
 ) : ViewModel() {
     
     private val _state = mutableStateOf(HomeScreenState())
@@ -29,6 +38,16 @@ class HomeViewModel @Inject constructor(
     
     init {
         loadMovies()
+        observeFavorites()
+    }
+    
+    private fun observeFavorites() {
+        getAllFavoritesUseCase()
+            .onEach { favoriteMovies ->
+                val favoriteIds = favoriteMovies.map { it.id }.toSet()
+                _state.value = _state.value.copy(favoriteMovieIds = favoriteIds)
+            }
+            .launchIn(viewModelScope)
     }
     
     fun loadMovies() {
@@ -40,10 +59,12 @@ class HomeViewModel @Inject constructor(
             
             when (val result = getPopularMoviesByTimePeriodUseCase(_state.value.selectedTimePeriod)) {
                 is Resource.Success -> {
+                    val movies = result.data ?: emptyList()
                     _state.value = _state.value.copy(
-                        movies = result.data ?: emptyList(),
+                        movies = movies,
                         isLoading = false
                     )
+                    // Favorite statuses are automatically updated via observeFavorites()
                 }
                 is Resource.Error -> {
                     _state.value = _state.value.copy(
@@ -55,6 +76,13 @@ class HomeViewModel @Inject constructor(
                     // Already handling loading state
                 }
             }
+        }
+    }
+    
+    fun toggleFavorite(movie: Movie) {
+        viewModelScope.launch {
+            toggleFavoriteUseCase(movie)
+            // Favorite status will be automatically updated via observeFavorites()
         }
     }
     

@@ -99,8 +99,12 @@ fun HomeScreen(
                             MovieSection(
                                 title = "${state.selectedTimePeriod.displayName}'s Trending Movies",
                                 movies = state.movies,
+                                favoriteMovieIds = state.favoriteMovieIds,
                                 onMovieClick = { movie ->
                                     // TODO: Navigate to movie detail screen
+                                },
+                                onFavoriteClick = { movie ->
+                                    viewModel.toggleFavorite(movie)
                                 }
                             )
                         }
