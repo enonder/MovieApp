@@ -76,9 +76,6 @@ The project includes **essential unit tests** focused on core functionality:
 ```bash
 # Run all tests
 ./gradlew test
-
-# Run with coverage
-./gradlew testDebugUnitTestCoverage
 ```
 
 ### Test Structure
@@ -94,22 +91,26 @@ app/src/test/
 
 ### Test Philosophy
 - **Focused on business logic** - ViewModels, critical utilities
-- **Realistic for rapid development** - 6 tests covering core functionality
+- **Essential coverage** - Core functionality validation
 - **Easy to maintain** - Simple, readable test cases
 
-## Performance & Caching
+## Performance & Storage
 
-### Current Caching Mechanisms
-
-#### Implemented
-1. **Favorites Caching**
+### Local Data Storage
+1. **Favorites Database**
    ```kotlin
    // Room Database - Persistent local storage
    @Entity(tableName = "favorite_movies")
    data class FavoriteMovieEntity(...)
    ```
 
-2. **Image Caching**
+2. **Theme Preferences**
+   ```kotlin
+   // DataStore - Persistent user settings
+   private val dataStore: DataStore<Preferences>
+   ```
+
+3. **Image Loading**
    ```kotlin
    // Coil - Automatic memory + disk caching
    AsyncImage(
@@ -118,28 +119,16 @@ app/src/test/
    )
    ```
 
-3. **Theme Preferences**
-   ```kotlin
-   // DataStore - Persistent user settings
-   private val dataStore: DataStore<Preferences>
-   ```
-
-#### Performance Benefits
-- **Faster app launches** - Favorites load instantly
-- **Reduced bandwidth** - Images cached automatically  
-- **Better UX** - Smooth scrolling with cached images
-- **Offline favorites** - Works without internet
-
-### Memory Management
-- **Singleton repositories** - Efficient resource usage
-- **Flow-based reactive UI** - Automatic lifecycle management
-- **Lazy loading** - Components created when needed
+### Performance Benefits
+- **Instant favorites access** - Local database storage
+- **Optimized image loading** - Coil handles caching automatically
+- **Persistent theme** - Settings saved across app sessions
+- **Reactive UI** - Automatic updates with Kotlin Flow
 
 ## Usage Guide
 
 ### Navigation
-- **Home Tab** - Browse trending movies (Today/This Week)
-- **Upcoming Tab** - See future releases
+- **Home Tab** - Browse trending movies (Today/This Week) and upcoming releases
 - **Favorites Tab** - Manage saved movies
 - **Settings Tab** - Toggle dark/light theme
 
@@ -147,43 +136,31 @@ app/src/test/
 - **Tap movie poster** - View movie details
 - **Heart icon** - Add/remove from favorites
 - **Time period toggle** - Switch between Today/This Week
-- **Pull to refresh** - Update movie lists
-- **Long press** - Bulk favorite management
+- **Tap on favorites** - Select multiple items for bulk removal
 
 ### Offline Capabilities
 - **Favorites** - Full offline access
 - **Cached images** - Previously viewed posters
 - **Theme settings** - Persists across sessions
-- **Movie lists** - Requires internet connection
 
-## Future Enhancements (v2.0)
+## Potential Future Enhancements
 
-### Internationalization
-- **Region Selection** - Movies by country (US, UK, IN, etc.)
-- **Language Support** - Multi-language movie titles
-- **Localized UI** - App interface in user's language
-- **Cultural Preferences** - Region-specific trending content
-
-### Enhanced UI/UX
-- **Animated Transitions** - Smooth screen changes
-- **Advanced Filtering** - Genre, rating, year filters
-- **Grid/List Toggle** - Multiple view options
-- **Movie Trailers** - In-app video playback
+### Enhanced Features
 - **Search Functionality** - Find specific movies
-- **Recommendations** - AI-powered suggestions
+- **Advanced Filtering** - Genre, rating, year filters
+- **Movie Trailers** - In-app video playback
+- **Grid/List Toggle** - Multiple view options
+- **Pull to Refresh** - Manual list updates
 
-### Offline Experience
+### Improved Offline Experience
 - **Movie List Caching** - Browse without internet
 - **Smart Cache Management** - Configurable storage limits
-- **Sync Strategy** - Background updates when online
-- **Cache Expiration** - Auto-refresh stale data
+- **Background Sync** - Auto-update when online
 
-### Advanced Testing
+### Extended Testing
 - **Repository Tests** - Data layer validation
-- **Integration Tests** - End-to-end workflows  
 - **UI Tests** - Compose testing framework
-- **Performance Tests** - Memory and speed benchmarks
-- **API Tests** - Network layer validation
+- **Integration Tests** - End-to-end workflows
 
 ## Project Structure
 
