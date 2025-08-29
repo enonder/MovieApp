@@ -14,6 +14,19 @@
     <color name="netflix_dark">#FF221F1F</color>
     <color name="netflix_gray">#FF564D4D</color>
     
+    <!-- Vibrant Dark Theme Colors -->
+    <color name="vibrant_orange">#FFFF6B35</color>
+    <color name="vibrant_blue">#FF00D4FF</color>
+    <color name="vibrant_purple">#FF9D4EDD</color>
+    <color name="vibrant_green">#FF00F5A0</color>
+    <color name="vibrant_pink">#FFFF006E</color>
+    <color name="vibrant_yellow">#FFFBFF12</color>
+    
+    <!-- Rich Dark Backgrounds -->
+    <color name="rich_dark_background">#FF0F0F0F</color>
+    <color name="rich_dark_surface">#FF1E1E1E</color>
+    <color name="rich_dark_card">#FF2A2A2A</color>
+    
     <!-- Background Colors -->
     <color name="cinema_background">#FFFFFBF7</color>
     <color name="cinema_surface">#FFF5F5F0</color>

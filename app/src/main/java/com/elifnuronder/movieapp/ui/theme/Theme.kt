@@ -13,16 +13,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = CinemaOrangeLight,
-    secondary = CinemaAmberLight,
-    tertiary = CinemaWarmLight,
-    background = CinemaBackgroundDark,
-    surface = CinemaSurfaceDark,
-    onPrimary = Color.Black,
+    primary = VibrantOrange,                    // Electric orange
+    secondary = VibrantBlue,                    // Bright cyan blue
+    tertiary = VibrantGreen,                    // Neon mint green
+    background = RichDarkBackground,            // Rich black
+    surface = RichDarkSurface,                  // Elevated dark surface
+    surfaceVariant = RichDarkCard,              // Card surfaces
+    primaryContainer = VibrantPurple,           // Vivid purple containers
+    secondaryContainer = VibrantPink,           // Hot pink containers
+    onPrimary = Color.Black,                    // Black text on vibrant colors
     onSecondary = Color.Black,
     onTertiary = Color.Black,
-    onBackground = Color.White,
-    onSurface = Color.White
+    onBackground = Color.White,                 // White text on dark
+    onSurface = Color.White,
+    onSurfaceVariant = Color(0xFFE0E0E0),      // Light gray text
+    outline = VibrantBlue                       // Bright borders
 )
 
 private val LightColorScheme = lightColorScheme(
