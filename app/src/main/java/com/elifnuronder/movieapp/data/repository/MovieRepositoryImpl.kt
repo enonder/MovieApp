@@ -28,7 +28,13 @@ class MovieRepositoryImpl @Inject constructor(
                 Resource.Error("Failed to fetch popular movies: ${response.message()}")
             }
         } catch (e: Exception) {
-            Resource.Error("Network error: ${e.localizedMessage}")
+            val errorMessage = when {
+                e is java.net.UnknownHostException -> "No internet connection"
+                e is java.net.SocketTimeoutException -> "No internet connection"
+                e.message?.contains("Unable to resolve host", ignoreCase = true) == true -> "No internet connection"
+                else -> "Something went wrong"
+            }
+            Resource.Error(errorMessage)
         }
     }
     
@@ -48,7 +54,13 @@ class MovieRepositoryImpl @Inject constructor(
                 Resource.Error("Failed to fetch ${timePeriod.displayName.lowercase()} trending movies: ${response.message()}")
             }
         } catch (e: Exception) {
-            Resource.Error("Network error: ${e.localizedMessage}")
+            val errorMessage = when {
+                e is java.net.UnknownHostException -> "No internet connection"
+                e is java.net.SocketTimeoutException -> "No internet connection"
+                e.message?.contains("Unable to resolve host", ignoreCase = true) == true -> "No internet connection"
+                else -> "Something went wrong"
+            }
+            Resource.Error(errorMessage)
         }
     }
     
@@ -96,7 +108,13 @@ class MovieRepositoryImpl @Inject constructor(
                 Resource.Error("Failed to fetch upcoming movies: ${response.message()}")
             }
         } catch (e: Exception) {
-            Resource.Error("Network error: ${e.localizedMessage}")
+            val errorMessage = when {
+                e is java.net.UnknownHostException -> "No internet connection"
+                e is java.net.SocketTimeoutException -> "No internet connection"
+                e.message?.contains("Unable to resolve host", ignoreCase = true) == true -> "No internet connection"
+                else -> "Something went wrong"
+            }
+            Resource.Error(errorMessage)
         }
     }
 }
