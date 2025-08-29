@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.elifnuronder.movieapp.ui.components.MovieDetailsBottomSheet
 import com.elifnuronder.movieapp.ui.components.MovieSection
-import com.elifnuronder.movieapp.ui.components.TimePeriodFilter
 import com.elifnuronder.movieapp.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,21 +97,16 @@ fun HomeScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     contentPadding = PaddingValues(vertical = 16.dp)
                 ) {
-                    item {
-                        TimePeriodFilter(
-                            selectedTimePeriod = state.selectedTimePeriod,
-                            onTimePeriodSelected = { timePeriod ->
-                                viewModel.selectTimePeriod(timePeriod)
-                            }
-                        )
-                    }
-                    
                     if (state.movies.isNotEmpty()) {
                         item {
                             MovieSection(
-                                title = "${state.selectedTimePeriod.displayName}'s Trending Movies",
+                                title = "Trending Movies",
                                 movies = state.movies,
                                 favoriteMovieIds = state.favoriteMovieIds,
+                                selectedTimePeriod = state.selectedTimePeriod,
+                                onTimePeriodSelected = { timePeriod ->
+                                    viewModel.selectTimePeriod(timePeriod)
+                                },
                                 onMovieClick = { movie ->
                                     viewModel.showMovieDetails(movie)
                                 },
