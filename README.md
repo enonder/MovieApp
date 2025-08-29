@@ -192,40 +192,6 @@ app/src/test/
 - **Performance Tests** - Memory and speed benchmarks
 - **API Tests** - Network layer validation
 
-## Implementation Roadmap
-
-### Phase 1: Core Enhancements (1-2 weeks)
-```kotlin
-// Movie List Caching
-@Entity(tableName = "cached_movies")
-data class CachedMovieEntity(
-    @PrimaryKey val id: Int,
-    val category: String, // "popular", "trending_today", etc.
-    val movieData: String, // JSON serialized movie
-    val cachedAt: Long,
-    val expiresAt: Long
-)
-
-// Region & Language Support
-data class UserPreferences(
-    val region: String = "US",
-    val language: String = "en",
-    val isDarkTheme: Boolean = false
-)
-```
-
-### Phase 2: Advanced Features (2-3 weeks)
-- Search with autocomplete
-- Movie detail screens with cast/crew
-- Recommendation engine
-- Social features (ratings, reviews)
-
-### Phase 3: Polish & Performance (1 week)
-- Advanced animations
-- Performance optimizations
-- Accessibility improvements
-- Comprehensive testing
-
 ## Project Structure
 
 ```
@@ -283,5 +249,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-  Made by <a href="https://github.com/enoder">Elifnur Onder</a>
+  Made by <a href="https://github.com/enonder">Elifnur Onder</a>
 </div>
