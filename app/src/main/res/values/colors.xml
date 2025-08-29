@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Warm Orange Cinema Theme -->
+    <color name="cinema_orange">#FFFF6F00</color>
+    <color name="cinema_amber">#FFFFC107</color>
+    <color name="cinema_warm">#FFFF8F00</color>
+    
+    <color name="cinema_orange_dark">#FFE65100</color>
+    <color name="cinema_amber_dark">#FFFF8F00</color>
+    <color name="cinema_warm_dark">#FFEF6C00</color>
+    
+    <!-- Netflix-style Alternative -->
+    <color name="netflix_red">#FFE50914</color>
+    <color name="netflix_dark">#FF221F1F</color>
+    <color name="netflix_gray">#FF564D4D</color>
+    
+    <!-- Background Colors -->
+    <color name="cinema_background">#FFFFFBF7</color>
+    <color name="cinema_surface">#FFF5F5F0</color>
+    <color name="cinema_background_dark">#FF1A1A1A</color>
+    <color name="cinema_surface_dark">#FF2D2D2D</color>
+    
+    <!-- Standard Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
