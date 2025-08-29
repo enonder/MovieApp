@@ -91,7 +91,7 @@ fun FavoriteMovieItem(
                         Icon(
                             imageVector = Icons.Default.Star,
                             contentDescription = "Rating",
-                            tint = MaterialTheme.colorScheme.primary,
+                            tint = Color(0xFFFF9500), // Darker orange for better visibility
                             modifier = Modifier.size(14.dp)
                         )
                         Text(

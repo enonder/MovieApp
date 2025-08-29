@@ -106,7 +106,7 @@ fun MovieCard(
                     ) {
                         Text(
                             text = "★",
-                            color = MaterialTheme.colorScheme.primary,
+                            color = Color(0xFFFF9500), // Darker orange for better visibility
                             style = MaterialTheme.typography.bodySmall
                         )
                         Spacer(modifier = Modifier.width(2.dp))

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -108,7 +109,7 @@ fun MovieDetailsBottomSheet(
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "Rating",
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = Color(0xFFFF9500), // Darker orange for better visibility
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
@@ -131,7 +132,7 @@ fun MovieDetailsBottomSheet(
                     Icon(
                         imageVector = Icons.Default.ThumbUp,
                         contentDescription = "Popularity",
-                        tint = MaterialTheme.colorScheme.secondary,
+                        tint = Color(0xFF4CAF50), // Medium green for popularity
                         modifier = Modifier.size(16.dp)
                     )
                     Text(
