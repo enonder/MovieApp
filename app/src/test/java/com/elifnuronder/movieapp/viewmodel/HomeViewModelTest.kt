@@ -3,7 +3,7 @@ package com.elifnuronder.movieapp.viewmodel
 import com.elifnuronder.movieapp.domain.model.Movie
 import com.elifnuronder.movieapp.domain.model.TimePeriod
 import com.elifnuronder.movieapp.domain.use_case.GetAllFavoritesUseCase
-import com.elifnuronder.movieapp.domain.use_case.GetFavoriteStatusUseCase
+
 import com.elifnuronder.movieapp.domain.use_case.GetPopularMoviesByTimePeriodUseCase
 import com.elifnuronder.movieapp.domain.use_case.GetUpcomingMoviesUseCase
 import com.elifnuronder.movieapp.domain.use_case.ToggleFavoriteUseCase
@@ -29,7 +29,7 @@ class HomeViewModelTest {
     private lateinit var getPopularMoviesByTimePeriodUseCase: GetPopularMoviesByTimePeriodUseCase
     private lateinit var getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase
     private lateinit var toggleFavoriteUseCase: ToggleFavoriteUseCase
-    private lateinit var getFavoriteStatusUseCase: GetFavoriteStatusUseCase
+
     private lateinit var getAllFavoritesUseCase: GetAllFavoritesUseCase
     private lateinit var viewModel: HomeViewModel
 
@@ -51,7 +51,7 @@ class HomeViewModelTest {
         getPopularMoviesByTimePeriodUseCase = mockk()
         getUpcomingMoviesUseCase = mockk()
         toggleFavoriteUseCase = mockk()
-        getFavoriteStatusUseCase = mockk()
+
         getAllFavoritesUseCase = mockk()
 
         // Default mocks
@@ -70,7 +70,7 @@ class HomeViewModelTest {
         // Given
         viewModel = HomeViewModel(
             getPopularMoviesByTimePeriodUseCase, getUpcomingMoviesUseCase,
-            toggleFavoriteUseCase, getFavoriteStatusUseCase, getAllFavoritesUseCase
+            toggleFavoriteUseCase, getAllFavoritesUseCase
         )
 
         // When
@@ -89,7 +89,7 @@ class HomeViewModelTest {
         
         viewModel = HomeViewModel(
             getPopularMoviesByTimePeriodUseCase, getUpcomingMoviesUseCase,
-            toggleFavoriteUseCase, getFavoriteStatusUseCase, getAllFavoritesUseCase
+            toggleFavoriteUseCase, getAllFavoritesUseCase
         )
 
         // When

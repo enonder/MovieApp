@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.elifnuronder.movieapp.ui.components.AppHeader
 import com.elifnuronder.movieapp.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,13 +22,16 @@ fun SettingsScreen(
     val isDarkTheme by viewModel.isDarkTheme.collectAsState()
     
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+        modifier = Modifier.fillMaxSize()
     ) {
-        // Header
-        Text(
-            text = "Settings",
+        AppHeader()
+        
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            // Header
+            Text(
+                text = "Settings",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 24.dp)
@@ -110,6 +114,7 @@ fun SettingsScreen(
                     }
                 }
             }
+        }
         }
     }
 }

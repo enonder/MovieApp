@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.elifnuronder.movieapp.ui.components.AppHeader
 import com.elifnuronder.movieapp.ui.components.FavoriteMovieItem
 import com.elifnuronder.movieapp.ui.components.MovieDetailsBottomSheet
 import com.elifnuronder.movieapp.viewmodel.FavoritesViewModel
@@ -37,130 +38,134 @@ fun FavoritesScreen(
         }
     }
     
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            // Header
-            Text(
-                text = "My Favorites",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(16.dp)
-            )
-            
-            if (favoriteMovies.isEmpty()) {
-                // Empty state
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+    Column(modifier = Modifier.fillMaxSize()) {
+        AppHeader()
+        
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                // Header
+                Text(
+                    text = "My Favorites",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+                
+                if (favoriteMovies.isEmpty()) {
+                    // Empty state
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = "No favorite movies yet",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Add movies to favorites by tapping the heart icon",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(horizontal = 32.dp)
-                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "No favorite movies yet",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Add movies to favorites by tapping the heart icon",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(horizontal = 32.dp)
+                            )
+                        }
                     }
-                }
-            } else {
-                // Favorites list
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = if (state.isSelectionMode) 80.dp else 0.dp),
-                    contentPadding = PaddingValues(vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(favoriteMovies) { movie ->
-                        FavoriteMovieItem(
-                            movie = movie,
-                            isSelected = viewModel.isMovieSelected(movie.id),
-                            onSelectionChange = { _ ->
-                                viewModel.toggleSelection(movie.id)
-                            },
-                            onClick = {
-                                viewModel.showMovieDetails(movie)
-                            }
-                        )
+                } else {
+                    // Favorites list
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = if (state.isSelectionMode) 80.dp else 0.dp),
+                        contentPadding = PaddingValues(vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(favoriteMovies) { movie ->
+                            FavoriteMovieItem(
+                                movie = movie,
+                                isSelected = viewModel.isMovieSelected(movie.id),
+                                onSelectionChange = { _ ->
+                                    viewModel.toggleSelection(movie.id)
+                                },
+                                onClick = {
+                                    viewModel.showMovieDetails(movie)
+                                }
+                            )
+                        }
                     }
                 }
             }
-        }
-        
-        // Bottom action bar for selection mode
-        if (state.isSelectionMode) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter),
-                shadowElevation = 8.dp,
-                tonalElevation = 3.dp
-            ) {
-                Row(
+            
+            // Bottom action bar for selection mode
+            if (state.isSelectionMode) {
+                Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .align(Alignment.BottomCenter),
+                    shadowElevation = 8.dp,
+                    tonalElevation = 3.dp
                 ) {
-                    Text(
-                        text = "${state.selectedMovieIds.size} selected",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        TextButton(
-                            onClick = { viewModel.clearSelection() }
-                        ) {
-                            Text("Cancel")
-                        }
+                        Text(
+                            text = "${state.selectedMovieIds.size} selected",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                         
-                        Button(
-                            onClick = { viewModel.removeSelectedFromFavorites() },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.error
-                            )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Remove Selected")
+                            TextButton(
+                                onClick = { viewModel.clearSelection() }
+                            ) {
+                                Text("Cancel")
+                            }
+                            
+                            Button(
+                                onClick = { viewModel.removeSelectedFromFavorites() },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.error
+                                )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("Remove Selected")
+                            }
                         }
                     }
                 }
             }
         }
-        
-        // Movie Details Bottom Sheet
-        if (state.showMovieDetails && state.selectedMovie != null) {
-            ModalBottomSheet(
-                onDismissRequest = { viewModel.hideMovieDetails() },
-                sheetState = bottomSheetState
-            ) {
-                MovieDetailsBottomSheet(
-                    movie = state.selectedMovie!!,
-                    onDismiss = { viewModel.hideMovieDetails() }
-                )
-            }
+    }
+    
+    // Movie Details Bottom Sheet
+    if (state.showMovieDetails && state.selectedMovie != null) {
+        ModalBottomSheet(
+            onDismissRequest = { viewModel.hideMovieDetails() },
+            sheetState = bottomSheetState
+        ) {
+            MovieDetailsBottomSheet(
+                movie = state.selectedMovie!!,
+                onDismiss = { viewModel.hideMovieDetails() }
+            )
         }
     }
 }

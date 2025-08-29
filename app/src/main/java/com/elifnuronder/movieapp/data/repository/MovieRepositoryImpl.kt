@@ -52,8 +52,7 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
     
-    // Removed getTopRatedMovies - not currently used in app
-    // Removed getNowPlayingMovies - not currently used in app
+
     
     override suspend fun getUpcomingMovies(page: Int): Resource<List<Movie>> {
         return try {
@@ -65,8 +64,7 @@ class MovieRepositoryImpl @Inject constructor(
             val fromDate = currentDate.format(dateFormatter)
             val toDate = sixMonthsFromNow.format(dateFormatter)
             
-            // Debug: Print the dates we're using
-            println("MovieApp Debug - Fetching upcoming movies from $fromDate to $toDate")
+
             
             val response = api.getUpcomingMoviesFiltered(
                 apiKey = apiKey,
@@ -91,7 +89,7 @@ class MovieRepositoryImpl @Inject constructor(
                             }
                         }
                     
-                    println("MovieApp Debug - Filtered ${movieListResponse.results.size} movies to ${filteredMovies.size} upcoming movies")
+
                     Resource.Success(filteredMovies)
                 } ?: Resource.Error("Empty response body")
             } else {

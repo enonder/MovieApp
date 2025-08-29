@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.elifnuronder.movieapp.ui.components.AppHeader
 import com.elifnuronder.movieapp.ui.components.MovieDetailsBottomSheet
 import com.elifnuronder.movieapp.ui.components.MovieSection
 import com.elifnuronder.movieapp.viewmodel.HomeViewModel
@@ -32,121 +33,125 @@ fun HomeScreen(
         }
     }
     
-    Box(modifier = Modifier.fillMaxSize()) {
-        when {
-            state.isTrendingLoading && state.movies.isEmpty() -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-            
-            state.error != null -> {
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = state.error ?: "Unknown error occurred",
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.error
+    Column(modifier = Modifier.fillMaxSize()) {
+        AppHeader()
+        
+        Box(modifier = Modifier.fillMaxSize()) {
+            when {
+                state.isTrendingLoading && state.movies.isEmpty() -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
                     )
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    Button(
-                        onClick = { viewModel.retry() }
+                }
+            
+                state.error != null -> {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text("Retry")
-                    }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        Text(
+                            text = state.error ?: "Unknown error occurred",
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.error
                         )
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp)
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        Button(
+                            onClick = { viewModel.retry() }
                         ) {
-                            Text(
-                                text = "Setup Instructions:",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            Text("Retry")
+                        }
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "1. Get your API key from https://www.themoviedb.org/settings/api\n" +
-                                        "2. Replace 'YOUR_TMDB_API_KEY_HERE' in MovieRepositoryImpl.kt\n" +
-                                        "3. Rebuild and run the app",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Text(
+                                    text = "Setup Instructions:",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "1. Get your API key from https://www.themoviedb.org/settings/api\n" +
+                                            "2. Replace 'YOUR_TMDB_API_KEY_HERE' in MovieRepositoryImpl.kt\n" +
+                                            "3. Rebuild and run the app",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
                         }
                     }
                 }
-            }
-            
-            else -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(vertical = 16.dp)
-                ) {
-                    if (state.movies.isNotEmpty()) {
-                        item {
-                            MovieSection(
-                                title = "Trending Movies",
-                                movies = state.movies,
-                                favoriteMovieIds = state.favoriteMovieIds,
-                                selectedTimePeriod = state.selectedTimePeriod,
-                                onTimePeriodSelected = { timePeriod ->
-                                    viewModel.selectTimePeriod(timePeriod)
-                                },
-                                onMovieClick = { movie ->
-                                    viewModel.showMovieDetails(movie)
-                                },
-                                onFavoriteClick = { movie ->
-                                    viewModel.toggleFavorite(movie)
-                                }
-                            )
+                
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        contentPadding = PaddingValues(vertical = 16.dp)
+                    ) {
+                        if (state.movies.isNotEmpty()) {
+                            item {
+                                MovieSection(
+                                    title = "Trending Movies",
+                                    movies = state.movies,
+                                    favoriteMovieIds = state.favoriteMovieIds,
+                                    selectedTimePeriod = state.selectedTimePeriod,
+                                    onTimePeriodSelected = { timePeriod ->
+                                        viewModel.selectTimePeriod(timePeriod)
+                                    },
+                                    onMovieClick = { movie ->
+                                        viewModel.showMovieDetails(movie)
+                                    },
+                                    onFavoriteClick = { movie ->
+                                        viewModel.toggleFavorite(movie)
+                                    }
+                                )
+                            }
                         }
-                    }
-                    
-                    if (state.upcomingMovies.isNotEmpty()) {
-                        item {
-                            MovieSection(
-                                title = "Upcoming Movies",
-                                movies = state.upcomingMovies,
-                                favoriteMovieIds = state.favoriteMovieIds,
-                                onMovieClick = { movie ->
-                                    viewModel.showMovieDetails(movie)
-                                },
-                                onFavoriteClick = { movie ->
-                                    viewModel.toggleFavorite(movie)
-                                }
-                            )
+                        
+                        if (state.upcomingMovies.isNotEmpty()) {
+                            item {
+                                MovieSection(
+                                    title = "Upcoming Movies",
+                                    movies = state.upcomingMovies,
+                                    favoriteMovieIds = state.favoriteMovieIds,
+                                    onMovieClick = { movie ->
+                                        viewModel.showMovieDetails(movie)
+                                    },
+                                    onFavoriteClick = { movie ->
+                                        viewModel.toggleFavorite(movie)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
         }
-        
-        // Movie Details Bottom Sheet
-        if (state.showMovieDetails && state.selectedMovie != null) {
-            ModalBottomSheet(
-                onDismissRequest = { viewModel.hideMovieDetails() },
-                sheetState = bottomSheetState
-            ) {
-                MovieDetailsBottomSheet(
-                    movie = state.selectedMovie!!,
-                    onDismiss = { viewModel.hideMovieDetails() }
-                )
-            }
+    }
+    
+    // Movie Details Bottom Sheet
+    if (state.showMovieDetails && state.selectedMovie != null) {
+        ModalBottomSheet(
+            onDismissRequest = { viewModel.hideMovieDetails() },
+            sheetState = bottomSheetState
+        ) {
+            MovieDetailsBottomSheet(
+                movie = state.selectedMovie!!,
+                onDismiss = { viewModel.hideMovieDetails() }
+            )
         }
     }
 }

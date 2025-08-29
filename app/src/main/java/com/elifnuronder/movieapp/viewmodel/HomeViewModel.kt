@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.elifnuronder.movieapp.domain.model.Movie
 import com.elifnuronder.movieapp.domain.model.TimePeriod
 import com.elifnuronder.movieapp.domain.use_case.GetAllFavoritesUseCase
-import com.elifnuronder.movieapp.domain.use_case.GetFavoriteStatusUseCase
+
 import com.elifnuronder.movieapp.domain.use_case.GetPopularMoviesByTimePeriodUseCase
 import com.elifnuronder.movieapp.domain.use_case.GetUpcomingMoviesUseCase
 import com.elifnuronder.movieapp.domain.use_case.ToggleFavoriteUseCase
@@ -35,7 +35,7 @@ class HomeViewModel @Inject constructor(
     private val getPopularMoviesByTimePeriodUseCase: GetPopularMoviesByTimePeriodUseCase,
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
-    private val getFavoriteStatusUseCase: GetFavoriteStatusUseCase,
+
     private val getAllFavoritesUseCase: GetAllFavoritesUseCase
 ) : ViewModel() {
     
