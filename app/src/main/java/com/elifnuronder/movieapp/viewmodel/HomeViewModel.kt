@@ -9,6 +9,7 @@ import com.elifnuronder.movieapp.domain.model.TimePeriod
 import com.elifnuronder.movieapp.domain.use_case.GetAllFavoritesUseCase
 import com.elifnuronder.movieapp.domain.use_case.GetFavoriteStatusUseCase
 import com.elifnuronder.movieapp.domain.use_case.GetPopularMoviesByTimePeriodUseCase
+import com.elifnuronder.movieapp.domain.use_case.GetUpcomingMoviesUseCase
 import com.elifnuronder.movieapp.domain.use_case.ToggleFavoriteUseCase
 import com.elifnuronder.movieapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,9 +20,11 @@ import javax.inject.Inject
 
 data class HomeScreenState(
     val movies: List<Movie> = emptyList(),
+    val upcomingMovies: List<Movie> = emptyList(),
     val selectedTimePeriod: TimePeriod = TimePeriod.TODAY,
     val favoriteMovieIds: Set<Int> = emptySet(),
-    val isLoading: Boolean = false,
+    val isTrendingLoading: Boolean = false,
+    val isUpcomingLoading: Boolean = false,
     val error: String? = null,
     val selectedMovie: Movie? = null,
     val showMovieDetails: Boolean = false
@@ -30,6 +33,7 @@ data class HomeScreenState(
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getPopularMoviesByTimePeriodUseCase: GetPopularMoviesByTimePeriodUseCase,
+    private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
     private val getFavoriteStatusUseCase: GetFavoriteStatusUseCase,
     private val getAllFavoritesUseCase: GetAllFavoritesUseCase
@@ -40,6 +44,7 @@ class HomeViewModel @Inject constructor(
     
     init {
         loadMovies()
+        loadUpcomingMovies()
         observeFavorites()
     }
     
@@ -55,7 +60,7 @@ class HomeViewModel @Inject constructor(
     fun loadMovies() {
         viewModelScope.launch {
             _state.value = _state.value.copy(
-                isLoading = true,
+                isTrendingLoading = true,
                 error = null
             )
             
@@ -64,14 +69,14 @@ class HomeViewModel @Inject constructor(
                     val movies = result.data ?: emptyList()
                     _state.value = _state.value.copy(
                         movies = movies,
-                        isLoading = false
+                        isTrendingLoading = false
                     )
                     // Favorite statuses are automatically updated via observeFavorites()
                 }
                 is Resource.Error -> {
                     _state.value = _state.value.copy(
                         error = result.message,
-                        isLoading = false
+                        isTrendingLoading = false
                     )
                 }
                 is Resource.Loading -> {
@@ -95,6 +100,33 @@ class HomeViewModel @Inject constructor(
     
     fun retry() {
         loadMovies()
+        loadUpcomingMovies()
+    }
+    
+    private fun loadUpcomingMovies() {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(isUpcomingLoading = true)
+            
+            when (val result = getUpcomingMoviesUseCase()) {
+                is Resource.Success -> {
+                    val upcomingMovies = result.data ?: emptyList()
+                    _state.value = _state.value.copy(
+                        upcomingMovies = upcomingMovies,
+                        isUpcomingLoading = false
+                    )
+                }
+                is Resource.Error -> {
+                    // Handle error if needed - for now we'll just show empty list
+                    _state.value = _state.value.copy(
+                        upcomingMovies = emptyList(),
+                        isUpcomingLoading = false
+                    )
+                }
+                is Resource.Loading -> {
+                    // Loading state already set above
+                }
+            }
+        }
     }
     
     fun showMovieDetails(movie: Movie) {

@@ -34,7 +34,7 @@ fun HomeScreen(
     
     Box(modifier = Modifier.fillMaxSize()) {
         when {
-            state.isLoading -> {
+            state.isTrendingLoading && state.movies.isEmpty() -> {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
                 )
@@ -107,6 +107,22 @@ fun HomeScreen(
                                 onTimePeriodSelected = { timePeriod ->
                                     viewModel.selectTimePeriod(timePeriod)
                                 },
+                                onMovieClick = { movie ->
+                                    viewModel.showMovieDetails(movie)
+                                },
+                                onFavoriteClick = { movie ->
+                                    viewModel.toggleFavorite(movie)
+                                }
+                            )
+                        }
+                    }
+                    
+                    if (state.upcomingMovies.isNotEmpty()) {
+                        item {
+                            MovieSection(
+                                title = "Upcoming Movies",
+                                movies = state.upcomingMovies,
+                                favoriteMovieIds = state.favoriteMovieIds,
                                 onMovieClick = { movie ->
                                     viewModel.showMovieDetails(movie)
                                 },

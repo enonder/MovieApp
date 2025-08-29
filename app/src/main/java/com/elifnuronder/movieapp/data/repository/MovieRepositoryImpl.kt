@@ -52,42 +52,47 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
     
-    override suspend fun getTopRatedMovies(page: Int): Resource<List<Movie>> {
-        return try {
-            val response = api.getTopRatedMovies(apiKey, page)
-            if (response.isSuccessful) {
-                response.body()?.let { movieListResponse ->
-                    Resource.Success(movieListResponse.results.map { it.toMovie() })
-                } ?: Resource.Error("Empty response body")
-            } else {
-                Resource.Error("Failed to fetch top rated movies: ${response.message()}")
-            }
-        } catch (e: Exception) {
-            Resource.Error("Network error: ${e.localizedMessage}")
-        }
-    }
-    
-    override suspend fun getNowPlayingMovies(page: Int): Resource<List<Movie>> {
-        return try {
-            val response = api.getNowPlayingMovies(apiKey, page)
-            if (response.isSuccessful) {
-                response.body()?.let { movieListResponse ->
-                    Resource.Success(movieListResponse.results.map { it.toMovie() })
-                } ?: Resource.Error("Empty response body")
-            } else {
-                Resource.Error("Failed to fetch now playing movies: ${response.message()}")
-            }
-        } catch (e: Exception) {
-            Resource.Error("Network error: ${e.localizedMessage}")
-        }
-    }
+    // Removed getTopRatedMovies - not currently used in app
+    // Removed getNowPlayingMovies - not currently used in app
     
     override suspend fun getUpcomingMovies(page: Int): Resource<List<Movie>> {
         return try {
-            val response = api.getUpcomingMovies(apiKey, page)
+            // Get current date and 3 months from now for proper upcoming filtering
+            val currentDate = java.time.LocalDate.now()
+            val sixMonthsFromNow = currentDate.plusMonths(6)
+            val dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            
+            val fromDate = currentDate.format(dateFormatter)
+            val toDate = sixMonthsFromNow.format(dateFormatter)
+            
+            // Debug: Print the dates we're using
+            println("MovieApp Debug - Fetching upcoming movies from $fromDate to $toDate")
+            
+            val response = api.getUpcomingMoviesFiltered(
+                apiKey = apiKey,
+                page = page,
+                releaseDateFrom = fromDate,
+                releaseDateTo = toDate
+            )
+            
             if (response.isSuccessful) {
                 response.body()?.let { movieListResponse ->
-                    Resource.Success(movieListResponse.results.map { it.toMovie() })
+                    // Additional client-side filtering to ensure no past dates
+                    val today = java.time.LocalDate.now()
+                    val filteredMovies = movieListResponse.results
+                        .map { it.toMovie() }
+                        .filter { movie ->
+                            try {
+                                val movieDate = java.time.LocalDate.parse(movie.releaseDate)
+                                movieDate.isAfter(today) || movieDate.isEqual(today)
+                            } catch (e: Exception) {
+                                // If date parsing fails, include the movie
+                                true
+                            }
+                        }
+                    
+                    println("MovieApp Debug - Filtered ${movieListResponse.results.size} movies to ${filteredMovies.size} upcoming movies")
+                    Resource.Success(filteredMovies)
                 } ?: Resource.Error("Empty response body")
             } else {
                 Resource.Error("Failed to fetch upcoming movies: ${response.message()}")
