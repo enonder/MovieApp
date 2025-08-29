@@ -1,18 +1,11 @@
 # MovieApp
 
-A modern Android movie discovery app built with **Jetpack Compose**, **Clean Architecture**, and **TMDB API** integration.
-
-<div align="center">
-  <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" />
-  <img src="https://img.shields.io/badge/Kotlin-0095D5?style=for-the-badge&logo=kotlin&logoColor=white" />
-  <img src="https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white" />
-  <img src="https://img.shields.io/badge/Material%20Design%203-757575?style=for-the-badge&logo=materialdesign&logoColor=white" />
-</div>
+A modern Android movie library app built with **Jetpack Compose**, **Clean Architecture**, and **TMDB API** integration.
 
 ## Features
 
 ### Current Features (v1.0)
-- **Browse Popular Movies** - Today & This Week trending
+- **Popular Movies** - Today & This Week trending
 - **Upcoming Movies** - Latest theatrical releases
 - **Favorites System** - Save and manage favorite movies
 - **Dark/Light Theme** - Persistent theme switching
@@ -195,56 +188,32 @@ app/src/test/
 ## Project Structure
 
 ```
-app/src/main/java/com/elifnuronder/movieapp/
 ├── data/
 │   ├── local/
 │   │   ├── dao/           # Room DAOs
 │   │   ├── database/      # Database setup
 │   │   └── entity/        # Room entities
+│   ├── preferences/       # DataStore preferences
 │   ├── remote/
 │   │   ├── dto/           # API response models
-│   │   └── TmdbApi.kt        # Retrofit interface
+│   │   └── TmdbApi.kt     # Retrofit interface
 │   └── repository/        # Repository implementations
-├── di/                    # Dependency injection
+├── di/                    # Dependency injection modules
 ├── domain/
 │   ├── model/             # Domain models
 │   ├── repository/        # Repository interfaces
 │   └── use_case/          # Business logic
+├── navigation/            # Navigation components
 ├── ui/
 │   ├── components/        # Reusable UI components
 │   ├── screens/           # Screen composables
 │   └── theme/             # Material Design theme
 ├── util/                  # Utility classes
-└── viewmodel/             # ViewModels
+├── viewmodel/             # ViewModels
+├── MainActivity.kt        # Main activity
+├── MainScreen.kt          # Main screen composable
+└── MovieApplication.kt    # Application class
 ```
-
-## Contributing
-
-### Development Setup
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature/amazing-feature`
-3. Follow existing code style and architecture
-4. Add tests for new functionality
-5. Commit changes: `git commit -m 'Add amazing feature'`
-6. Push to branch: `git push origin feature/amazing-feature`
-7. Open Pull Request
-
-### Code Style
-- Follow [Android Kotlin Style Guide](https://developer.android.com/kotlin/style-guide)
-- Use meaningful variable/function names
-- Add KDoc comments for public APIs
-- Keep functions small and focused
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [TMDB API](https://www.themoviedb.org/documentation/api) - Movie data provider
-- [Material Design 3](https://m3.material.io/) - Design system
-- [Jetpack Compose](https://developer.android.com/jetpack/compose) - Modern UI toolkit
-- [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) - Architecture principles
 
 ---
 
